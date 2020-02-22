@@ -71,6 +71,29 @@ class ArrayExtension extends Extension {
 
 	}
 
+    /**
+     * Returns the keys of an array as an array
+     * @param ArrayValue $arr
+     * @return ArrayValue
+     */
+    public static function array_keys(ArrayValue $arr): ArrayValue {
+	    $keys = \array_keys($arr->value);
+
+	    return new ArrayValue(array_map(static function ($k) {
+	        return Value::buildAutomatic($k);
+	        }, $keys)
+        );
+	}
+
+    /**
+     * Return all the values of an array as an indexed array of values
+     * @param ArrayValue $arr
+     * @return ArrayValue
+     */
+	public static function array_values(ArrayValue $arr): ArrayValue {
+        return new ArrayValue(\array_values($arr->value));
+    }
+
 	public static function array_get(ArrayValue $arr, Value $key, Value $default = null): Value {
 
 		// Allow only some value types.
