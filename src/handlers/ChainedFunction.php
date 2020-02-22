@@ -4,6 +4,7 @@ namespace Smuuf\Primi\Handlers;
 
 use \Smuuf\Primi\Context;
 use \Smuuf\Primi\HandlerFactory;
+use Smuuf\Primi\Structures\ObjectValue;
 use \Smuuf\Primi\Structures\Value;
 use \Smuuf\Primi\Handlers\Variable;
 use \Smuuf\Primi\Helpers\ChainedHandler;
@@ -29,11 +30,17 @@ class ChainedFunction extends ChainedHandler {
 		// specified name.
 		$typedName = self::inferTypedName($name, $subject);
 
-		try {
-			$fn = Variable::fetch($typedName, $node, $context);
-		} catch (UndefinedVariableException $e) {
-			$fn = Variable::fetch($name, $node, $context);
-		}
+		// Maybe it is a function that belongs to the object.
+        // Let's try that first
+        if($subject instanceof ObjectValue && $subject->hasMethod($name)) {
+            $fn = $subject->getMethodByName($name);
+        } else {
+            try {
+                $fn = Variable::fetch($typedName, $node, $context);
+            } catch (UndefinedVariableException $e) {
+                $fn = Variable::fetch($name, $node, $context);
+            }
+        }
 
 		// Modify the invocation node to contain the subject. It's handler will
 		// know what to do. Not a particulary pretty solution, so if you manage

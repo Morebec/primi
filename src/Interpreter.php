@@ -99,6 +99,7 @@ ExtensionHub::add([
 	\Smuuf\Primi\Psl\StringExtension::class,
 	\Smuuf\Primi\Psl\NumberExtension::class,
 	\Smuuf\Primi\Psl\ArrayExtension::class,
+	\Smuuf\Primi\Psl\ObjectExtension::class,
 	\Smuuf\Primi\Psl\RegexExtension::class,
 	\Smuuf\Primi\Psl\BoolExtension::class,
 	\Smuuf\Primi\Psl\CastingExtension::class,

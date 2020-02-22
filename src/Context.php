@@ -59,7 +59,6 @@ class Context extends StrictObject implements IContext {
 	}
 
 	public function getVariable(string $name): Value {
-
 		// Variables of current context instance have higher priority than
 		// global variables.
 		if (isset($this->vars[$name])) {
