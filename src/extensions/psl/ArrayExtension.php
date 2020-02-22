@@ -51,6 +51,28 @@ class ArrayExtension extends Extension {
 
 	}
 
+    /**
+     * Filters an array by a given function
+     * @param ArrayValue $arr
+     * @param FuncValue $fn
+     * @return ArrayValue
+     */
+    public static function array_filter(ArrayValue $arr, FuncValue $fn): ArrayValue
+    {
+        $filtered = [];
+        foreach ($arr->value as $k => $v) {
+            /** @var BoolValue $returnedValue */
+            $returnedValue = $fn->invoke([$v]);
+            Common::allowTypes($returnedValue,BoolValue::class);
+
+            if($returnedValue->value === true) {
+                $filtered[$k] = $v;
+            }
+        }
+
+        return new ArrayValue($filtered);
+	}
+
 	public static function array_contains(ArrayValue $arr, Value $needle): BoolValue {
 
 		// Allow only some value types.
