@@ -5,30 +5,14 @@ namespace Smuuf\Primi\Psl;
 
 
 use Smuuf\Primi\Extension;
-use Smuuf\Primi\ExtensionHub;
 use Smuuf\Primi\Structures\ArrayValue;
-use Smuuf\Primi\Structures\FuncValue;
 use Smuuf\Primi\Structures\ObjectValue;
 
 class ObjectExtension extends Extension
 {
-    public static function object_new(ArrayValue $arrayValue): ObjectValue
+    public static function object_new(): ObjectValue
     {
-        $properties = [];
-        $methods = [];
-
-        foreach ($arrayValue->value as $key => $value) {
-            if($value instanceof FuncValue) {
-                $methods[$key] = $value;
-            } else {
-                $properties[$key] = $value;
-            }
-        }
-
-        var_dump($properties);
-        ExtensionHub::addCallable([self::class, 'object_test']);
-
-        return new ObjectValue($properties, $methods);
+        return new ObjectValue(new SimpleObject('Root'));
     }
 
     public static function object__properties(ObjectValue $objectValue): ArrayValue
@@ -39,5 +23,28 @@ class ObjectExtension extends Extension
     public static function object__methods(ObjectValue $objectValue): ArrayValue
     {
         return new ArrayValue($objectValue->getMethods());
+    }
+}
+
+class SimpleObject {
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+    public function hello(): string
+    {
+        return 'Hello! My name is ' . $this->name;
+    }
+
+    public function obj(): self
+    {
+        return new SimpleObject('inner object');
     }
 }

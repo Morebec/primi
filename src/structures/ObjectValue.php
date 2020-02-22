@@ -3,6 +3,7 @@
 
 namespace Smuuf\Primi\Structures;
 
+
 /**
  * The Object value is used as a bridge to pass PHP objects to Primi.
  */
@@ -10,12 +11,16 @@ class ObjectValue extends Value
 {
     public const TYPE = 'object';
 
-    public function __construct(array $properties, array $methods)
+    private $reflection;
+
+    public function __construct($object)
     {
-        $this->value = [
-            'properties' => $properties,
-            'methods' => $methods
-        ];
+        if(!is_object($object)) {
+            throw new \RuntimeException(sprintf("Expected object, got '%s'", gettype($object)));
+        }
+
+        $this->value = $object;
+        $this->reflection = new \ReflectionClass($object);
     }
 
     /**
@@ -25,7 +30,7 @@ class ObjectValue extends Value
      */
     public function hasMethod(string $name): bool
     {
-        return isset($this->value['methods'][$name]);
+        return $this->reflection->hasMethod($name);
     }
 
     /**
@@ -33,27 +38,23 @@ class ObjectValue extends Value
      * @param string $name
      * @return FuncValue
      */
-    public function getMethodByName(string $name): FuncValue
+    public function getMethodByName(string $name): ObjectMethod
     {
-        if($this->hasMethod($name)) {
-            return $this->value['methods'][$name];
+        if(!$this->hasMethod($name)) {
+            throw new \RuntimeException('Method not found on object ' . $this->reflection->getShortName());
         }
 
-        throw new \RuntimeException('Method not found on object');
+        $fnC = FnContainer::buildFromClosure([$this->value, $name]);
+
+        return new ObjectMethod($this, $fnC);
     }
 
     public function getStringValue(): string
     {
-        return self::TYPE;
-    }
+        if($this->reflection->hasMethod('__toString')) {
+            return (string)$this->value;
+        }
 
-    public function getProperties(): array
-    {
-        return $this->value['properties'];
-    }
-
-    public function getMethods(): array
-    {
-        return $this->value['methods'];
+        return $this->reflection->getShortName();
     }
 }

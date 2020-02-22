@@ -51,7 +51,7 @@ class Invocation extends ChainedHandler {
 
 		} catch (\TypeError $e) {
 
-			$msg = "Wrong type of argument passed to function";
+			$msg = "Wrong type of argument passed to function: " . $e->getMessage();
 			throw new ErrorException($msg, $node);
 
 		}

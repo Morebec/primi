@@ -13,6 +13,8 @@ abstract class Value extends ValueFriends {
 		switch (\true) {
 			case $value === \null:
 				return new NullValue;
+            case \is_object($value):
+                return new ObjectValue($value);
 			case \is_bool($value):
 				return new BoolValue($value);
 			case \is_callable($value);

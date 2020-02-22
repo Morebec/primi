@@ -39,15 +39,6 @@ class ExtensionHub extends \Smuuf\Primi\StrictObject {
 		return self::$extensions;
 	}
 
-    /**
-     * Adds a new callable
-     * @param array $callable
-     */
-    public static function addCallable(array $callable): void
-    {
-        self::$extensions[$callable[1]] = Value::buildAutomatic($callable);
-	}
-
 	/**
 	 * Process an extension class - iterate over all public methods and
 	 * register their return value as target value object's property.
