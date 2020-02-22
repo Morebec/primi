@@ -34,7 +34,6 @@ class Interpreter extends \Smuuf\Primi\StrictObject {
 	public function run(string $source) {
 
 		$ast = $this->getSyntaxTree($source);
-
 		// Each node must have two keys: 'name' and 'text'.
 		// These are provided by the PHP-PEG itself, so we should be able to
 		// be counting on it.

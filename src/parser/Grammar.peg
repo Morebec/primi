@@ -38,7 +38,11 @@ AnonymousFunction: "function" __ "(" __ args:FunctionDefinitionArgumentList? __ 
 ArrayItem: ( key:Expression __ ":" )? __ value:Expression )
 ArrayDefinition: "[" __ ( items:ArrayItem ( __ "," __ items:ArrayItem )* )? __ ( "," __ )? "]"
 
-Value: skip:RangeLiteral | skip:Literal | skip:Variable | skip:ArrayDefinition
+ObjectItem: ( key:Expression __ ":" )? __ value:Expression )
+ObjectDefinition: "{" __ ( items:ObjectItem ( __ "," __ items:ObjectItem )* )? __ ( "," __ )? "}"
+
+
+Value: skip:RangeLiteral | skip:Literal | skip:Variable | skip:ArrayDefinition | skip:ObjectDefinition
 VariableVector: core:Variable vector:Vector
 Vector: ( "[" __ ( arrayKey:Expression | arrayKey:Nothing ) __ "]" ) vector:Vector?
 Mutable: skip:VariableVector | skip:VariableName
@@ -88,7 +92,7 @@ ContinueStatement: "continue"
 BlockStatements: &/[A-Za-z]/ ( skip:IfStatement | skip:WhileStatement | skip:ForStatement | skip:FunctionDefinition )
 
 # !/[\s\{\};]/ Ensures that we won't try to match further if any of those symbols are at the beginning of the substring we're matching.
-Statement: !/[\s\{\};]/ ( skip:BlockStatements | skip:CommandStatements | skip:Expression )
+Statement: !/[\s;]/ ( skip:BlockStatements | skip:CommandStatements | skip:Expression )
 Block: "{" __ ( skip:Program )? "}"
 
 # Matches any optional whitespace or newline.

@@ -57,4 +57,24 @@ class ObjectValue extends Value
 
         return $this->reflection->getShortName();
     }
+
+    public function getProperties(): array
+    {
+        $props = [];
+        $reflectionProperties = $this->reflection->getProperties();
+        foreach ($reflectionProperties as $property) {
+            $props[$property->getName()] = new ObjectValue($property);
+        }
+        return $props;
+    }
+
+    public function getMethods(): array
+    {
+        $reflectionMethods = $this->reflection->getMethods();
+        $methods = [];
+        foreach ($reflectionMethods as $method) {
+            $methods[$method->getName()] = new ObjectValue($method);
+        }
+        return $methods;
+    }
 }

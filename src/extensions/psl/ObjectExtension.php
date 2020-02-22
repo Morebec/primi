@@ -33,6 +33,9 @@ class SimpleObject {
      */
     private $name;
 
+    /** @var string */
+    public $property = 'i am public';
+
     public function __construct(string $name)
     {
         $this->name = $name;
