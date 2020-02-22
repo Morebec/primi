@@ -73,6 +73,32 @@ class ArrayExtension extends Extension {
         return new ArrayValue($filtered);
 	}
 
+    /**
+     * Converts an array to json
+     * @param ArrayValue $arr
+     * @return StringValue
+     */
+    public static function array_json(ArrayValue $arr): StringValue
+    {
+        $flatten = static function (array $array) use (&$flatten) {
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    $array[$key] = $flatten($array[$key]);
+                } elseif ($value instanceof ArrayValue) {
+                    $array[$key] = $flatten($value->value);
+                } else {
+                    /** @var Value $value */
+                    $array[$key] = $value->value;
+                }
+            }
+            return $array;
+        };
+
+        $flattened = $flatten($arr->value);
+
+        return new StringValue(json_encode($flattened));
+	}
+
 	public static function array_contains(ArrayValue $arr, Value $needle): BoolValue {
 
 		// Allow only some value types.
