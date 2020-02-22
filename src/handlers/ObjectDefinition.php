@@ -11,13 +11,14 @@ use Smuuf\Primi\Helpers\Common;
 use Smuuf\Primi\Helpers\SimpleHandler;
 use Smuuf\Primi\Structures\NumberValue;
 use Smuuf\Primi\Structures\ObjectValue;
+use Smuuf\Primi\Structures\PSLObject;
 
 class ObjectDefinition extends SimpleHandler
 {
 	public static function handle(array $node, Context $context) {
 
 		if (empty($node['items'])) {
-			return new ObjectValue(new \StdClass());
+			return new ObjectValue(new PSLObject());
 		}
 
 		Common::ensureIndexed($node['items']);
@@ -25,7 +26,7 @@ class ObjectDefinition extends SimpleHandler
 
 	}
 
-	protected static function buildObject(array $itemNodes, Context $context): object
+	protected static function buildObject(array $itemNodes, Context $context): PSLObject
     {
 
 		$result = [];
@@ -63,7 +64,7 @@ class ObjectDefinition extends SimpleHandler
 
 		}
 
-		return (object)$result;
+		return new PSLObject($result);
 
 	}
 }

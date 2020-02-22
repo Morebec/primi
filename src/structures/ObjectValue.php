@@ -30,6 +30,10 @@ class ObjectValue extends Value
      */
     public function hasMethod(string $name): bool
     {
+        if($this->value instanceof PSLObject) {
+            return $this->value->hasMethod($name);
+        }
+
         return $this->reflection->hasMethod($name);
     }
 
