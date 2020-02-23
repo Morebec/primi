@@ -2,6 +2,8 @@
 
 namespace Smuuf\Primi;
 
+use Smuuf\Primi\Psl\IOExtension;
+
 /**
  * Direct abstract syntax tree interpreter.
  * @see https://en.wikipedia.org/wiki/Interpreter_(computing)#Abstract_Syntax_Tree_interpreters
@@ -95,10 +97,11 @@ class Interpreter extends \Smuuf\Primi\StrictObject {
 }
 
 ExtensionHub::add([
+    \Smuuf\Primi\Psl\IOExtension::class,
+	\Smuuf\Primi\Psl\ObjectExtension::class,
 	\Smuuf\Primi\Psl\StringExtension::class,
 	\Smuuf\Primi\Psl\NumberExtension::class,
 	\Smuuf\Primi\Psl\ArrayExtension::class,
-	\Smuuf\Primi\Psl\ObjectExtension::class,
 	\Smuuf\Primi\Psl\RegexExtension::class,
 	\Smuuf\Primi\Psl\BoolExtension::class,
 	\Smuuf\Primi\Psl\CastingExtension::class,
