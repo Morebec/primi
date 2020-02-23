@@ -69,10 +69,11 @@ Multiplication: operands:Negation ( __ ops:MultiplyOperator __ operands:Negation
 Negation: ( nots:NegationOperator )* core:Operand
 Operand: ( ( "(" __ core:Expression __ ")" | core:Value ) chain:Chain? ) | skip:Value
 
-Chain: ( core:Dereference | core:Invocation | core:ChainedFunction ) chain:Chain?
+Chain: ( core:Dereference | core:Invocation | core:ChainedFunction | core:PropertyAccess) chain:Chain?
 Dereference: "[" __ key:Expression __ "]"
 Invocation: "(" __ args:ArgumentList? __ ")"
 ChainedFunction: ObjectResolutionOperator fn:Variable invo:Invocation
+PropertyAccess: ObjectResolutionOperator fn:Variable
 
 ArgumentList: args:Expression ( __ "," __ args:Expression )*
 
