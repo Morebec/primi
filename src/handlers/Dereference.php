@@ -17,7 +17,6 @@ class Dereference extends ChainedHandler {
 		Context $context,
 		Value $subject
 	) {
-
 		if (!$subject instanceof ISupportsArrayAccess) {
 			throw new \Smuuf\Primi\ErrorException(\sprintf(
 				"Type '%s' does not support dereferencing",

@@ -14,21 +14,6 @@ class ObjectExtension extends Extension
     {
         return new ObjectValue(new SimpleObject('Root'));
     }
-
-    public static function object_inspect($objectValue): void
-    {
-        var_dump($objectValue);
-    }
-
-    public static function object__properties(ObjectValue $objectValue): ArrayValue
-    {
-        return new ArrayValue($objectValue->getProperties());
-    }
-
-    public static function object__methods(ObjectValue $objectValue): ArrayValue
-    {
-        return new ArrayValue($objectValue->getMethods());
-    }
 }
 
 class SimpleObject {

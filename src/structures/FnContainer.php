@@ -99,7 +99,7 @@ class FnContainer extends \Smuuf\Primi\StrictObject {
 			$passPhpValues = \false;
 		}
 
-		$wrapper = function(...$args) use ($closure, $passPhpValues) {
+		$wrapper = function(...$args) use ($r, $closure, $passPhpValues) {
 
 			if ($passPhpValues) {
 				$args = \array_map(function(Value $value) {
@@ -107,7 +107,11 @@ class FnContainer extends \Smuuf\Primi\StrictObject {
 				}, $args);
 			}
 
-			$result = $closure(...$args);
+			if($r->getNumberOfRequiredParameters()) {
+			    $result = $closure(...$args);
+            } else {
+			    $result = $closure();
+            }
 
 			if ($passPhpValues && !$result instanceof Value) {
 				return Value::buildAutomatic($result);

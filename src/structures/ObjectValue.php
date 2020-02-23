@@ -4,10 +4,13 @@
 namespace Smuuf\Primi\Structures;
 
 
+use Smuuf\Primi\InternalUndefinedIndexException;
+use Smuuf\Primi\ISupportsArrayAccess;
+
 /**
  * The Object value is used as a bridge to pass PHP objects to Primi.
  */
-class ObjectValue extends Value
+class ObjectValue extends Value implements ISupportsArrayAccess
 {
     public const TYPE = 'object';
 
@@ -81,4 +84,39 @@ class ObjectValue extends Value
         }
         return $methods;
     }
+
+	public function getIterator(): \Iterator
+    {
+		return new \ArrayIterator($this->value);
+	}
+
+	public function arrayGet(string $key): Value
+    {
+
+        try {
+            if (!isset($this->value[$key])) {
+                throw new InternalUndefinedIndexException($key);
+            }
+
+            return $this->value[$key];
+        } catch (\Error $error) {
+            $shortName = $this->reflection->getShortName();
+            throw new \TypeError("Cannot use object {$shortName} as array.", 0, $error);
+        }
+	}
+
+	public function arraySet(?string $key, Value $value)
+    {
+
+		if ($key === \null) {
+			$this->value[] = $value;
+		} else {
+			$this->value[$key] = $value;
+		}
+
+	}
+
+	public function getArrayInsertionProxy(?string $key): ArrayInsertionProxy {
+		return new ArrayInsertionProxy($this, $key);
+	}
 }

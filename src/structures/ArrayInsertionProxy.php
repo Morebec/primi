@@ -19,9 +19,6 @@ class ArrayInsertionProxy extends InsertionProxy {
 			);
 
 			throw new ErrorException($msg);
-
 		}
-
 	}
-
 }
