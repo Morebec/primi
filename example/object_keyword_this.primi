@@ -1,0 +1,19 @@
+michael = {
+	'name': "Michael",
+	'introduce': () => {
+		println("Hi! My names is {} and my brother is {}".format(this.name, this.brother.name));
+	}
+}
+
+john = {
+	'name': "John",
+	'introduce': () => {
+		println("Hi! My names is {} and my brother is {}".format(this.name, this.brother.name));
+	}
+}
+
+michael['brother'] = john
+john['brother'] = michael
+
+michael.introduce()
+john.introduce()

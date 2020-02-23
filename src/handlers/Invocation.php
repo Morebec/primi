@@ -6,6 +6,7 @@ use \Smuuf\Primi\Context;
 use \Smuuf\Primi\HandlerFactory;
 use \Smuuf\Primi\ErrorException;
 use \Smuuf\Primi\Helpers\Common;
+use Smuuf\Primi\Structures\ObjectMethod;
 use \Smuuf\Primi\Structures\Value;
 use \Smuuf\Primi\InternalException;
 use \Smuuf\Primi\ISupportsInvocation;
@@ -32,6 +33,10 @@ class Invocation extends ChainedHandler {
 			$handler = HandlerFactory::get($node['args']['name']);
 			$arguments = $handler::handle($node['args'], $context);
 		}
+
+		if($fn instanceof ObjectMethod) {
+		    $context->setVariable('this', $fn->getObject());
+        }
 
 		try {
 

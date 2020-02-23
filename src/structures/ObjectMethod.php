@@ -6,6 +6,11 @@ namespace Smuuf\Primi\Structures;
 
 class ObjectMethod extends FuncValue
 {
+    /**
+     * @var ObjectValue
+     */
+    private $object;
+
     public function __construct(ObjectValue $objectValue, FnContainer $fn)
     {
         parent::__construct($fn);

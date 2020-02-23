@@ -17,4 +17,13 @@ class IOExtension extends Extension
             echo $value;
         }
     }
+
+    public static function println($value): void
+    {
+        if($value instanceof Value) {
+            echo $value->getStringValue() . PHP_EOL;
+        } else {
+            echo $value . PHP_EOL;
+        }
+    }
 }
